@@ -213,7 +213,7 @@ const BusinessWebsite = () => {
                 <div className="product-icon">🟡</div>
                 <h3>Brass Scrap</h3>
                 <p>
-                  Sourced from certified European and domestic suppliers, our brass scrap (see image: brassScrap.jpg) meets stringent metallurgical standards. We offer consistent supply for foundries and mills requiring reliable, specification-compliant material for high-performance applications.
+                  Sourced from certified European and domestic suppliers, our brass scrap meets stringent metallurgical standards. We offer consistent supply for foundries and mills requiring reliable, specification-compliant material for high-performance applications.
                 </p>
               </div>
             </div>
@@ -226,7 +226,7 @@ const BusinessWebsite = () => {
                 <div className="product-icon">🟠</div>
                 <h3>Copper Scrap</h3>
                 <p>
-                  Our copper scrap portfolio (see image: copperScrap.jpg) includes Berry, Birch/Cliff, and Cobra grades, suitable for electrical, construction, and manufacturing sectors. All lots are XRF-verified and traceable, ensuring compliance with international quality benchmarks.
+                  Our copper scrap portfolio includes Berry, Birch/Cliff, and Cobra grades, suitable for electrical, construction, and manufacturing sectors. All lots are XRF-verified and traceable, ensuring compliance with international quality benchmarks.
                 </p>
               </div>
             </div>
@@ -239,7 +239,7 @@ const BusinessWebsite = () => {
                 <div className="product-icon">⚫</div>
                 <h3>Iron Scrap</h3>
                 <p>
-                  We supply HMS 1 & 2 iron scrap (see image: ironScrap.jpg) with full documentation and logistics support. Our iron scrap is sourced from audited yards, ensuring consistent sizing and minimal impurities for efficient melting and processing.
+                  We supply HMS 1 & 2 iron scrap with full documentation and logistics support. Our iron scrap is sourced from audited yards, ensuring consistent sizing and minimal impurities for efficient melting and processing.
                 </p>
               </div>
             </div>
@@ -252,7 +252,7 @@ const BusinessWebsite = () => {
                 <div className="product-icon">⚪</div>
                 <h3>Aluminium Scrap</h3>
                 <p>
-                  Our aluminium scrap (see image: aluminiumScrap.jpg) includes wire, shredded (E40/ISRI 201:211), and UBC. Each batch is inspected for alloy content and contamination, supporting clients in automotive, packaging, and extrusion industries.
+                  Our aluminium scrap includes wire, shredded (E40/ISRI 201:211), and UBC. Each batch is inspected for alloy content and contamination, supporting clients in automotive, packaging, and extrusion industries.
                 </p>
               </div>
             </div>
