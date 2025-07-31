@@ -161,8 +161,8 @@ const BusinessWebsite = () => {
         </div>
         <div className="hero-content">
           <h1>MetalloScrap</h1>
-          <p>Direct Metal Procurement Solutions for Rolling Mills</p>
-          <p className="hero-subtitle">Eliminating intermediaries. Empowering businesses.</p>
+          <p>Strategic Metal Scrap Sourcing for Industrial Clients</p>
+          <p className="hero-subtitle">Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
           <button className="cta-button" onClick={() => scrollToSection('products')}>
             Explore Our Products
           </button>
@@ -176,28 +176,20 @@ const BusinessWebsite = () => {
           <div className="vision-content">
             <div className="vision-card">
               <div className="vision-icon">
-                <img src="/images/vision.jpg" alt="Vision" className="vision-image" />
+                <img src={process.env.PUBLIC_URL + '/images/vision.jpg'} alt="Vision" className="vision-image" />
               </div>
               <h2>Our Vision</h2>
               <p>
-                To eliminate the complex network of intermediaries that small rolling mills 
-                must navigate to procure metals in India. We envision a streamlined, 
-                transparent supply chain that directly connects mills with quality metal suppliers, 
-                ensuring cost efficiency and reliable delivery for all our partners.
+                To set the benchmark for transparent, compliant, and efficient metal scrap procurement in India and Europe. We aim to empower rolling mills and manufacturers by providing direct access to vetted sources, minimizing risk and maximizing operational continuity.
               </p>
             </div>
             <div className="mission-card">
               <div className="mission-icon">
-                <img src="/images/mission.jpg" alt="Mission" className="mission-image" />
+                <img src={process.env.PUBLIC_URL + '/images/mission.jpg'} alt="Mission" className="mission-image" />
               </div>
               <h2>Our Mission</h2>
               <p>
-                We have successfully broken down traditional barriers in metal procurement 
-                and established direct supply channels. Our proven track record includes 
-                helping rolling mills like Mayank Rolling Mill in Farrukhabad, Uttar Pradesh 
-                to procure brass scrap directly from sellers, reducing costs and improving 
-                efficiency. We continue to expand our network and capabilities to serve 
-                more mills across India with reliable, direct metal sourcing solutions.
+                Our mission is to deliver consistent, specification-driven metal scrap supply, leveraging a robust network of international and domestic partners. We focus on quality assurance, regulatory adherence, and tailored logistics, as demonstrated by our successful direct brass scrap deliveries to Mayank Rolling Mill (Farrukhabad, UP) and other industrial clients.
               </p>
             </div>
           </div>
@@ -209,67 +201,58 @@ const BusinessWebsite = () => {
         <div className="container">
           <h2>Our Products & Services</h2>
           <p className="section-subtitle">
-            We primarily deal in brass, iron, aluminium and copper scrap, serving rolling mills 
-            across India with direct procurement solutions.
+            We specialize in the procurement and supply of high-grade brass, iron, aluminium, and copper scrap, serving the evolving needs of rolling mills and industrial manufacturers across India and Europe.
           </p>
           
           <div className="products-grid">
             <div className="product-card">
               <div className="product-image">
-                <img src="/images/brassScrap.jpg" alt="Brass Scrap" className="img-cover" />
+                <img src={process.env.PUBLIC_URL + '/images/brassScrap.jpg'} alt="Brass Scrap" className="img-cover" />
               </div>
               <div className="product-content">
                 <div className="product-icon">🟡</div>
                 <h3>Brass Scrap</h3>
                 <p>
-                  India ranks among the top consumers of brass globally. Due to growing demand, 
-                  we now import high-quality brass scrap from the European Union, ensuring 
-                  consistent supply and superior quality for our clients.
+                  Sourced from certified European and domestic suppliers, our brass scrap (see image: brassScrap.jpg) meets stringent metallurgical standards. We offer consistent supply for foundries and mills requiring reliable, specification-compliant material for high-performance applications.
                 </p>
               </div>
             </div>
             
             <div className="product-card">
               <div className="product-image">
-                <img src="/images/copperScrap.jpg" alt="Copper Scrap" className="img-cover" />
+                <img src={process.env.PUBLIC_URL + '/images/copperScrap.jpg'} alt="Copper Scrap" className="img-cover" />
               </div>
               <div className="product-content">
                 <div className="product-icon">🟠</div>
                 <h3>Copper Scrap</h3>
                 <p>
-                  With India's ongoing infrastructure development drive, we have recently 
-                  expanded into copper trading. We offer various grades of copper scrap 
-                  to meet specific requirements. Please reach out for any specific grade needs.
+                  Our copper scrap portfolio (see image: copperScrap.jpg) includes Berry, Birch/Cliff, and Cobra grades, suitable for electrical, construction, and manufacturing sectors. All lots are XRF-verified and traceable, ensuring compliance with international quality benchmarks.
                 </p>
               </div>
             </div>
             
             <div className="product-card">
               <div className="product-image">
-                <img src="/images/ironScrap.jpg" alt="Iron Scrap" className="img-cover" />
+                <img src={process.env.PUBLIC_URL + '/images/ironScrap.jpg'} alt="Iron Scrap" className="img-cover" />
               </div>
               <div className="product-content">
                 <div className="product-icon">⚫</div>
                 <h3>Iron Scrap</h3>
                 <p>
-                  With 5-6 years of successful trading experience, we are your reliable partner 
-                  for iron scrap procurement. We offer HMS 1 and 2 grades, ready for dispatch 
-                  across India with competitive pricing and reliable delivery.
+                  We supply HMS 1 & 2 iron scrap (see image: ironScrap.jpg) with full documentation and logistics support. Our iron scrap is sourced from audited yards, ensuring consistent sizing and minimal impurities for efficient melting and processing.
                 </p>
               </div>
             </div>
             
             <div className="product-card">
               <div className="product-image">
-                <img src="/images/aluminiumScrap.jpg" alt="Aluminium Scrap" className="img-cover" />
+                <img src={process.env.PUBLIC_URL + '/images/aluminiumScrap.jpg'} alt="Aluminium Scrap" className="img-cover" />
               </div>
               <div className="product-content">
                 <div className="product-icon">⚪</div>
                 <h3>Aluminium Scrap</h3>
                 <p>
-                  Our aluminium portfolio includes wire, disc brake scrap, shredded scrap 
-                  (E40/ISRI 201:211), and aluminium cans. With years of experience, we ensure 
-                  quality products and timely delivery to meet your production requirements.
+                  Our aluminium scrap (see image: aluminiumScrap.jpg) includes wire, shredded (E40/ISRI 201:211), and UBC. Each batch is inspected for alloy content and contamination, supporting clients in automotive, packaging, and extrusion industries.
                 </p>
               </div>
             </div>
@@ -277,20 +260,15 @@ const BusinessWebsite = () => {
 
           <div className="business-philosophy">
             <div className="philosophy-background">
-              <img src="/images/metalProcessing2.jpg" alt="Business Philosophy" className="philosophy-image" />
+              <img src={process.env.PUBLIC_URL + '/images/metalProcessing2.jpg'} alt="Business Philosophy" className="philosophy-image" />
             </div>
             <div className="philosophy-content">
               <h3>Our Business Philosophy</h3>
               <p>
-                We believe in customer satisfaction and fair trade practices. Our commitment 
-                is to ensure a safe and conducive environment for business opportunities. 
-                We maintain transparency in all transactions and prioritize long-term 
-                partnerships over short-term gains.
+                We operate with a commitment to regulatory compliance, supply chain transparency, and long-term value creation for our partners. Our business is built on rigorous due diligence, ethical sourcing, and a proactive approach to risk management.
               </p>
               <p>
-                Ready to streamline your metal procurement? Reach out to us directly or 
-                submit a query using our contact form. We would be more than happy to assist 
-                you with your specific requirements.
+                For tailored procurement solutions or to discuss your technical requirements, contact us directly or submit a detailed inquiry. Our team is ready to provide expert guidance and responsive service.
               </p>
             </div>
           </div>
@@ -304,12 +282,11 @@ const BusinessWebsite = () => {
           <div className="contact-content">
             <div className="contact-info">
               <div className="contact-image">
-                <img src="/images/contactUs.png" alt="Contact Us" className="img-cover" />
+                <img src={process.env.PUBLIC_URL + '/images/contactUs.png'} alt="Contact Us" className="img-cover" />
               </div>
               <h3>Get In Touch</h3>
               <p className="contact-intro">
-                Ready to optimize your metal procurement process? Let's discuss how we can 
-                help your rolling mill achieve better efficiency and cost savings.
+                For procurement partnerships, technical consultations, or compliance documentation, please contact our team. We serve industrial clients across India and Europe with end-to-end sourcing solutions.
               </p>
               <div className="contact-item">
                 <span className="contact-icon">📍</span>
@@ -322,14 +299,15 @@ const BusinessWebsite = () => {
                 <span className="contact-icon">📞</span>
                 <div>
                   <h4>Phone</h4>
-                  <p>+91 9098189919</p>
+                  <p>+49 176 68554158 (Vitthal Shukla)</p>
+                  <p>+91 91489 71493 (Vitthal Shukla)</p>
                 </div>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>pratham8123@gmail.com</p>
+                  <p>vitthalshukla1129@gmail.com</p>
                 </div>
               </div>
             </div>
@@ -405,7 +383,7 @@ const BusinessWebsite = () => {
           <div className="footer-content">
             <div className="footer-section">
               <h3>MetalloScrap</h3>
-              <p>Direct metal procurement solutions for rolling mills across India. Eliminating intermediaries, empowering businesses.</p>
+              <p>MetalloScrap delivers compliant, specification-driven metal scrap sourcing for industrial clients. Our expertise spans direct procurement, quality assurance, and logistics for rolling mills and manufacturers.</p>
             </div>
             <div className="footer-section">
               <h4>Quick Links</h4>
