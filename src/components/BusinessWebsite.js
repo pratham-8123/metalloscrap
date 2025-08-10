@@ -299,8 +299,8 @@ const BusinessWebsite = () => {
                 <span className="contact-icon">📞</span>
                 <div>
                   <h4>Phone</h4>
-                  <p>+49 176 68554158 (Vitthal Shukla)</p>
-                  <p>+91 91489 71493 (Vitthal Shukla)</p>
+                  <p>+49 176 68554158</p>
+                  <p>+91 91489 71493</p>
                 </div>
               </div>
               <div className="contact-item">
