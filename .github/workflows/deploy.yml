@@ -1,5 +1,4 @@
-# This file handles the github actions for auto-deployment
-name: 🚀 Deploy React to Hostinger
+name: 🚀 Deploy React to Hostinger via FTP
 
 on:
   push:
@@ -20,11 +19,18 @@ jobs:
           node-version: 18
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci
 
-      - name: Build project
+      - name: Build
         run: npm run build
+
+      - name: 🔍 Show what will be uploaded
+        run: |
+          echo "=== Last commit ==="
+          git log --oneline -1
+          echo "=== Build folder contents ==="
+          ls -la ./build/
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
