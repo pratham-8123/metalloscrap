@@ -41,3 +41,4 @@ jobs:
           local-dir: ./build/
           server-dir: /public_html/
           dangerous-clean-slate: true
+          timeout: 120000
