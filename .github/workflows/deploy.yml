@@ -1,5 +1,4 @@
-# This is a test comment
-name: 🚀 Deploy to Hostinger via FTP
+name: 🚀 Deploy React to Hostinger
 
 on:
   push:
@@ -7,18 +6,24 @@ on:
       - master
 
 jobs:
-  ftp-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug – show all FTP secrets (safe in public logs; values are masked)
-        run: |
-          echo "FTP_HOST=[${{ secrets.FTP_HOST }}]"
-          echo "FTP_USERNAME=[${{ secrets.FTP_USERNAME }}]"
-          echo "FTP_PASSWORD=[${{ secrets.FTP_PASSWORD }}]"
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build          # creates ./build/
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
