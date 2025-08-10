@@ -1,3 +1,4 @@
+# This file handles the github actions for auto-deployment
 name: 🚀 Deploy React to Hostinger
 
 on:
