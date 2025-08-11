@@ -15,7 +15,7 @@ const BusinessWebsite = () => {
 
   // Initialize EmailJS
   useEffect(() => {
-    emailjs.init("4UdegH2WSwEGFxEIk");
+    emailjs.init("BrRSRetOQlcwhIMMH");
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -44,17 +44,17 @@ const BusinessWebsite = () => {
       console.log('Attempting to send form data to business email...');
       
       const businessEmailResult = await emailjs.send(
-        'service_4zyu3ie',
-        'template_4r2ogcc',
+        'service_gxrynx3',
+        'template_q926awn',
         {
-          to_email: 'pratham8123@gmail.com',
+          to_email: 'info@metalloscrap.com',
           user_name: formData.name,
           user_email: formData.email,
           subject: `New Contact Form: ${formData.subject}`,
           message: `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
           reply_to: formData.email
         },
-        '4UdegH2WSwEGFxEIk'
+        'BrRSRetOQlcwhIMMH'
       );
 
       console.log('Business email sent successfully:', businessEmailResult);
@@ -76,17 +76,17 @@ const BusinessWebsite = () => {
         console.log('Trying alternative parameter format...');
         
         const result = await emailjs.send(
-          'service_4zyu3ie',
-          'template_4r2ogcc',
+          'service_gxrynx3',
+          'template_q926awn',
           {
-            to_email: 'pratham8123@gmail.com',
+            to_email: 'info@metalloscrap.com',
             from_name: formData.name,
             from_email: formData.email,
             subject: `New Contact Form: ${formData.subject}`,
             message: `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
             reply_to: formData.email
           },
-          '4UdegH2WSwEGFxEIk'
+          'BrRSRetOQlcwhIMMH'
         );
         
         if (result.status === 200) {
@@ -307,7 +307,8 @@ const BusinessWebsite = () => {
                 <span className="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>vitthalshukla1129@gmail.com</p>
+                  <p>info@metalloscrap.com</p>
+                  <p>purchasing@metalloscrap.com</p>
                 </div>
               </div>
             </div>
