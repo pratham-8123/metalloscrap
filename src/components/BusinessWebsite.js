@@ -160,9 +160,9 @@ const BusinessWebsite = () => {
           <div className="hero-image-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1>Shreela Group</h1>
+          <h1>Shreela Group<span className="formerly-tag">(formerly MetalloScrap)</span></h1>
           <p>Strategic Metal Scrap Sourcing for Industrial Clients</p>
-          <p className="hero-subtitle">Formerly MetalloScrap — Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
+          <p className="hero-subtitle">Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
           <button className="cta-button" onClick={() => scrollToSection('products')}>
             Explore Our Products
           </button>
