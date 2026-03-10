@@ -115,7 +115,7 @@ const BusinessWebsite = () => {
       <nav className="navbar">
         <div className="nav-container">
           <div className="nav-logo">
-            <h2>MetalloScrap</h2>
+            <h2>Shreela Group</h2>
           </div>
           <ul className="nav-menu">
             <li className="nav-item">
@@ -160,9 +160,9 @@ const BusinessWebsite = () => {
           <div className="hero-image-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1>MetalloScrap</h1>
+          <h1>Shreela Group</h1>
           <p>Strategic Metal Scrap Sourcing for Industrial Clients</p>
-          <p className="hero-subtitle">Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
+          <p className="hero-subtitle">Formerly MetalloScrap — Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
           <button className="cta-button" onClick={() => scrollToSection('products')}>
             Explore Our Products
           </button>
@@ -383,8 +383,8 @@ const BusinessWebsite = () => {
         <div className="container">
           <div className="footer-content">
             <div className="footer-section">
-              <h3>MetalloScrap</h3>
-              <p>MetalloScrap delivers compliant, specification-driven metal scrap sourcing for industrial clients. Our expertise spans direct procurement, quality assurance, and logistics for rolling mills and manufacturers.</p>
+              <h3>Shreela Group</h3>
+              <p>Shreela Group (formerly MetalloScrap) delivers compliant, specification-driven metal scrap sourcing for industrial clients. Our expertise spans direct procurement, quality assurance, and logistics for rolling mills and manufacturers.</p>
             </div>
             <div className="footer-section">
               <h4>Quick Links</h4>
@@ -406,7 +406,7 @@ const BusinessWebsite = () => {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 MetalloScrap. All rights reserved. | Direct Metal Procurement Solutions</p>
+            <p>&copy; 2025 Shreela Group. All rights reserved. | Direct Metal Procurement Solutions</p>
           </div>
         </div>
       </footer>
