@@ -39,25 +39,28 @@ const BusinessWebsite = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    // Payload: never use the visitor's address as From (from_email) — that breaks SPF/DKIM
+    // and causes spam folder placement. Reply-To is the correct place for the submitter's email.
+    const emailPayload = {
+      to_email: 'info@metalloscrap.com',
+      from_name: 'Shreela Group — Website',
+      user_name: formData.name,
+      user_email: formData.email,
+      user_subject: formData.subject,
+      user_message: formData.message,
+      subject: `New inquiry: ${formData.subject}`,
+      // Plain fallback if EmailJS template still uses {{message}} only
+      message: `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\n${formData.message}`,
+      reply_to: formData.email
+    };
+
     try {
-      // Method 1: Try to send directly to business email using send method
-      console.log('Attempting to send form data to business email...');
-      
       const businessEmailResult = await emailjs.send(
         'service_gxrynx3',
         'template_q926awn',
-        {
-          to_email: 'info@metalloscrap.com',
-          user_name: formData.name,
-          user_email: formData.email,
-          subject: `New Contact Form: ${formData.subject}`,
-          message: `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
-          reply_to: formData.email
-        },
+        emailPayload,
         'BrRSRetOQlcwhIMMH'
       );
-
-      console.log('Business email sent successfully:', businessEmailResult);
 
       if (businessEmailResult.status === 200) {
         setSubmitStatus('success');
@@ -69,40 +72,7 @@ const BusinessWebsite = () => {
         });
       }
     } catch (error) {
-      console.error('Primary method failed:', error);
-      
-      // Method 2: Try with different parameter names that might match your template
-      try {
-        console.log('Trying alternative parameter format...');
-        
-        const result = await emailjs.send(
-          'service_gxrynx3',
-          'template_q926awn',
-          {
-            to_email: 'info@metalloscrap.com',
-            from_name: formData.name,
-            from_email: formData.email,
-            subject: `New Contact Form: ${formData.subject}`,
-            message: `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
-            reply_to: formData.email
-          },
-          'BrRSRetOQlcwhIMMH'
-        );
-        
-        if (result.status === 200) {
-          setSubmitStatus('success');
-          setFormData({
-            name: '',
-            email: '',
-            subject: '',
-            message: ''
-          });
-          return;
-        }
-      } catch (altError) {
-        console.error('Alternative method failed:', altError);
-      }
-      
+      console.error('EmailJS send failed:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
