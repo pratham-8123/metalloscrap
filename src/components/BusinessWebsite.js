@@ -18,6 +18,49 @@ const BusinessWebsite = () => {
     emailjs.init("BrRSRetOQlcwhIMMH");
   }, []);
 
+  // Deep links such as metalloscrap.com/#contact-info (used by the printed QR code).
+  // The browser looks for the #anchor before React has rendered the page, finds
+  // nothing and stays at the top, so we do the jump ourselves. We jump again once
+  // web fonts finish loading, since text reflow can move the target, unless the
+  // visitor has already started scrolling.
+  useEffect(() => {
+    const targetId = window.location.hash.slice(1);
+    if (!targetId) return undefined;
+
+    const jump = () => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      // Jump instantly rather than smooth-scrolling through the whole page.
+      const root = document.documentElement;
+      const previousBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      target.scrollIntoView({ block: 'start' });
+      root.style.scrollBehavior = previousBehavior;
+    };
+
+    let cancelled = false;
+    let userScrolled = false;
+    const markUserScrolled = () => { userScrolled = true; };
+    const userEvents = ['wheel', 'touchstart', 'keydown'];
+    userEvents.forEach((evt) => window.addEventListener(evt, markUserScrolled, { passive: true }));
+
+    const realign = () => {
+      if (!cancelled && !userScrolled) jump();
+    };
+
+    jump();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(realign);
+    }
+    window.addEventListener('load', realign);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', realign);
+      userEvents.forEach((evt) => window.removeEventListener(evt, markUserScrolled));
+    };
+  }, []);
+
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
@@ -130,7 +173,7 @@ const BusinessWebsite = () => {
           <div className="hero-image-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1>Shreela Group<span className="formerly-tag">(formerly MetalloScrap)</span></h1>
+          <h1>Shreela Group{' '}<span className="formerly-tag">(formerly MetalloScrap)</span></h1>
           <p>Strategic Metal Scrap Sourcing for Industrial Clients</p>
           <p className="hero-subtitle">Direct supply chain solutions for rolling mills and manufacturers. Trusted by industry leaders for reliability and compliance.</p>
           <button className="cta-button" onClick={() => scrollToSection('products')}>
@@ -254,7 +297,7 @@ const BusinessWebsite = () => {
               <div className="contact-image">
                 <img src={process.env.PUBLIC_URL + '/images/contactUs.png'} alt="Contact Us" className="img-cover" />
               </div>
-              <h3>Get In Touch</h3>
+              <h3 id="contact-info">Get In Touch</h3>
               <p className="contact-intro">
                 For procurement partnerships, technical consultations, or compliance documentation, please contact our team. We serve industrial clients across India and Europe with end-to-end sourcing solutions.
               </p>
@@ -269,16 +312,16 @@ const BusinessWebsite = () => {
                 <span className="contact-icon">📞</span>
                 <div>
                   <h4>Phone</h4>
-                  <p>+49 176 68554158</p>
-                  <p>+91 91489 71493</p>
+                  <p><a href="tel:+4917668554158">+49 176 68554158</a></p>
+                  <p><a href="tel:+919148971493">+91 91489 71493</a></p>
                 </div>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>info@metalloscrap.com</p>
-                  <p>purchasing@metalloscrap.com</p>
+                  <p><a href="mailto:info@metalloscrap.com">info@metalloscrap.com</a></p>
+                  <p><a href="mailto:purchasing@metalloscrap.com">purchasing@metalloscrap.com</a></p>
                 </div>
               </div>
             </div>
@@ -376,7 +419,7 @@ const BusinessWebsite = () => {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2025 Shreela Group. All rights reserved. | Direct Metal Procurement Solutions</p>
+            <p>&copy; {new Date().getFullYear()} Shreela Group. All rights reserved. | Direct Metal Procurement Solutions</p>
           </div>
         </div>
       </footer>
