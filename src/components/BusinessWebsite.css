@@ -803,6 +803,13 @@
   background: rgba(74, 222, 128, 0.08);
   color: #b9f5cf;
 }
+.status {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.status--leaving {
+  opacity: 0;
+  transform: translateY(-4px);
+}
 .status--error {
   border: 1px solid rgba(248, 113, 113, 0.35);
   background: rgba(248, 113, 113, 0.08);

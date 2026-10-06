@@ -1,13 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { ArrowRightIcon } from './Icons';
 
 const EMPTY_FORM = { name: '', email: '', subject: '', message: '' };
 
+// How long the green "sent" banner stays before fading out. Errors stay until
+// the visitor edits the form or submits again, so they are never missed.
+const SUCCESS_BANNER_MS = 5000;
+const FADE_MS = 400;
+
 const ContactForm = () => {
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [bannerLeaving, setBannerLeaving] = useState(false);
+  const timers = useRef([]);
+
+  const clearTimers = () => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
+  };
+
+  // Auto-hide the success banner: start fading, then remove it.
+  useEffect(() => {
+    if (submitStatus !== 'success') return undefined;
+    setBannerLeaving(false);
+    timers.current.push(
+      window.setTimeout(() => setBannerLeaving(true), SUCCESS_BANNER_MS),
+      window.setTimeout(() => {
+        setSubmitStatus(null);
+        setBannerLeaving(false);
+      }, SUCCESS_BANNER_MS + FADE_MS)
+    );
+    return clearTimers;
+  }, [submitStatus]);
 
   // Initialize EmailJS
   useEffect(() => {
@@ -17,6 +43,7 @@ const ContactForm = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (submitStatus === 'error') setSubmitStatus(null);
   };
 
   const handleSubmit = async (e) => {
@@ -97,12 +124,12 @@ const ContactForm = () => {
 
       <div aria-live="polite">
         {submitStatus === 'success' && (
-          <p className="status status--success">
+          <p className={`status status--success${bannerLeaving ? ' status--leaving' : ''}`} role="status">
             Thank you. Your inquiry has been sent and we will get back to you soon.
           </p>
         )}
         {submitStatus === 'error' && (
-          <p className="status status--error">
+          <p className="status status--error" role="alert">
             Sorry, your message could not be sent. Please try again, or email us directly.
           </p>
         )}

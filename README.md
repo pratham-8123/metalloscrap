@@ -1,262 +1,107 @@
-# Core Metals - React Business Website
+# Shreela Group website (metalloscrap.com)
 
-A modern, responsive business website built with React for Core Metals, a professional metal services company. The website includes a functional contact form that sends emails using EmailJS.
+Single-page website for **Shreela Group** (formerly MetalloScrap), a metal scrap procurement company
+supplying brass, copper, iron and aluminium scrap to rolling mills and manufacturers in India and Europe.
 
-## Features
+Live site: https://metalloscrap.com · Current version: `v2.1.0` (see `package.json` and git tags)
 
-- **Modern Design**: Clean, professional design with smooth animations
-- **Responsive Layout**: Fully responsive design that works on all devices
-- **Interactive Navigation**: Smooth scrolling navigation with active state indicators
-- **Service Showcase**: Highlighted services with hover effects
-- **Contact Form**: Functional contact form with EmailJS integration
-- **About Section**: Company information with statistics
-- **Professional Footer**: Complete footer with links and company information
+## What the site does
 
-## File Structure
+- One page with four sections, each with its own URL: `/` (home), `/about`, `/products`, `/contact`.
+  The address bar follows the section you scroll to, and the back button works.
+- Phone numbers and emails are tappable on phones (`tel:` and `mailto:` links).
+- An inquiry form sends email through EmailJS to `info@metalloscrap.com`.
+- A printable QR code in `docs/qr/` opens `https://metalloscrap.com/contact`.
+
+## Tech
+
+- React 18 with Create React App (`react-scripts` 5). No router library: section URLs are handled by
+  `src/components/useSectionRouting.js` plus the server rewrite in `public/.htaccess`.
+- Plain CSS with design tokens in `src/index.css`. Fonts: Sora (headings) and Inter (text).
+- EmailJS (`@emailjs/browser`) for the contact form.
+- Hosting: Hostinger (LiteSpeed), deployed by GitHub Actions over FTP.
+
+## Project structure
 
 ```
-core-metals/
-├── public/
-│   ├── index.html
-│   └── favicon.ico
-├── src/
-│   ├── components/
-│   │   ├── BusinessWebsite.js
-│   │   └── BusinessWebsite.css
-│   ├── App.js
-│   ├── index.js
-│   └── index.css
-├── package.json
-├── README.md
-└── .gitignore
+public/
+  index.html            page head: title, SEO meta, structured data, fonts
+  .htaccess             section URLs -> index.html, caching rules
+  robots.txt, sitemap.xml
+  images/               sg_icon.png (tab icon), sg_logo.jpeg, sg_logo_plate.jpg/.webp (hero)
+src/
+  index.js, index.css   entry point, global design tokens and base styles
+  App.js
+  assets/hero_backdrop.jpg
+  components/
+    BusinessWebsite.js  the page: nav, hero, about, products, contact, footer
+    BusinessWebsite.css all section styles
+    useSectionRouting.js section URLs, scroll on load, scroll spy, back/forward
+    ContactForm.js      inquiry form and EmailJS call
+    Icons.js            inline SVG icons
+docs/
+  ROLLBACK.md           how to roll the live site back to an earlier version
+  qr/                   QR code artwork and its generator
+  EMAIL_DELIVERABILITY.md, emailjs-template-contact.html
+.github/workflows/deploy.yml   build and deploy on every push to master
 ```
 
-## Getting Started
+## Run locally
 
-### Prerequisites
-
-- Node.js (version 14 or higher)
-- npm or yarn
-- EmailJS account (free tier available)
-
-### Installation
-
-1. Navigate to the project directory:
-   ```bash
-   cd core-metals
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Set up EmailJS (see EmailJS Setup section below)
-
-4. Start the development server:
-   ```bash
-   npm start
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-## EmailJS Setup
-
-The contact form uses EmailJS to send emails directly to your inbox. Follow these steps to set it up:
-
-### 1. Create EmailJS Account
-1. Go to [EmailJS.com](https://www.emailjs.com/) and create a free account
-2. Verify your email address
-
-### 2. Add Email Service
-1. In your EmailJS dashboard, go to "Email Services"
-2. Click "Add New Service"
-3. Choose your email provider (Gmail, Outlook, etc.)
-4. Follow the authentication steps
-5. Note down your **Service ID**
-
-### 3. Create Email Template
-1. Go to "Email Templates" in your dashboard
-2. Click "Create New Template"
-3. Use this template content:
-
-**Template Name**: Contact Form Template
-
-**Subject**: New Contact Form Submission from {{from_name}}
-
-**HTML Content**:
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>New Contact Form Submission</title>
-</head>
-<body>
-    <h2>New Contact Form Submission</h2>
-    
-    <p><strong>Name:</strong> {{from_name}}</p>
-    <p><strong>Email:</strong> {{from_email}}</p>
-    <p><strong>Subject:</strong> {{subject}}</p>
-    
-    <h3>Message:</h3>
-    <p>{{message}}</p>
-    
-    <hr>
-    <p><em>This message was sent from the Core Metals website contact form.</em></p>
-</body>
-</html>
-```
-
-**Important**: Make sure to set the "To Email" field in your template to your email address where you want to receive the form submissions.
-
-4. Save the template and note down your **Template ID**
-
-### 4. Get Your Public Key
-1. Go to "Account" → "API Keys"
-2. Copy your **Public Key**
-
-### 5. Update the Code
-Replace the placeholder values in `src/components/BusinessWebsite.js`:
-
-```javascript
-// Line 15: Replace with your EmailJS public key
-emailjs.init("YOUR_PUBLIC_KEY");
-
-// Lines 47-48: Replace with your actual IDs
-'YOUR_SERVICE_ID', // Your EmailJS service ID
-'YOUR_TEMPLATE_ID', // Your EmailJS template ID
-
-// Line 50: Replace with your email address
-to_email: 'your-email@example.com', // Your email address
-
-// Line 56: Replace with your EmailJS public key
-'YOUR_PUBLIC_KEY' // Your EmailJS public key
-```
-
-### Example Configuration:
-```javascript
-emailjs.init("user_abc123def456");
-
-const result = await emailjs.send(
-  'service_xyz789',
-  'template_contact_form',
-  {
-    to_email: 'your-email@gmail.com', // Your email address
-    from_name: formData.name,
-    from_email: formData.email,
-    subject: formData.subject,
-    message: formData.message,
-    to_name: 'Core Metals Team'
-  },
-  'user_abc123def456'
-);
-```
-
-### Troubleshooting Common Issues:
-
-1. **"The recipients address is empty" Error**:
-   - Make sure you've set the "To Email" field in your EmailJS template
-   - Ensure the `to_email` parameter is included in the emailjs.send() call
-   - Verify your email service is properly connected
-
-2. **Template Variables Not Working**:
-   - Make sure template variable names match exactly (case-sensitive)
-   - Use double curly braces: `{{variable_name}}`
-
-3. **Service Not Found**:
-   - Verify your Service ID is correct
-   - Ensure your email service is active in EmailJS dashboard
-
-## Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm test` - Launches the test runner
-- `npm run build` - Builds the app for production
-- `npm run eject` - Ejects from Create React App (one-way operation)
-
-## Project Structure
-
-### Components
-
-- **BusinessWebsite.js**: Main component containing the entire website layout
-  - Navigation bar with smooth scrolling
-  - Hero section with call-to-action
-  - Services section with cards
-  - About section with company information
-  - Contact section with EmailJS integration
-  - Footer with links
-
-### Styling
-
-- **BusinessWebsite.css**: Comprehensive CSS with modern design
-  - Responsive grid layouts
-  - Smooth animations and transitions
-  - Professional color scheme
-  - Mobile-first responsive design
-  - Form submission states and status messages
-
-## Contact Form Features
-
-- **Real-time Validation**: Form fields are validated as users type
-- **Loading States**: Button shows "Sending..." during submission
-- **Success/Error Messages**: Clear feedback for form submission results
-- **Form Reset**: Form clears after successful submission
-- **EmailJS Integration**: Sends emails directly to your inbox
-
-## Customization
-
-### Colors
-The website uses a professional color palette:
-- Primary Blue: `#3498db`
-- Dark Blue: `#2c3e50`
-- Red Accent: `#e74c3c`
-- Light Gray: `#f8f9fa`
-
-### Content
-To customize the content:
-1. Edit the text content in `BusinessWebsite.js`
-2. Update contact information
-3. Modify service descriptions
-4. Change company statistics
-
-### Styling
-To modify the design:
-1. Edit `BusinessWebsite.css` for layout and styling changes
-2. Update colors in the CSS variables
-3. Modify animations and transitions
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Deployment
-
-To build the project for production:
+Requires Node.js 18 or newer.
 
 ```bash
-npm run build
+npm ci
+npm start              # dev server at http://localhost:3000
+npm run build          # production build in build/
+CI=true npm run build  # same check GitHub runs: any lint warning fails the build
 ```
 
-This creates a `build` folder with optimized production files that can be deployed to any static hosting service.
+The dev server does not apply `.htaccess`, so open `/contact` from the menu rather than typing it.
 
-## Technologies Used
+## Deploying
 
-- React 18.2.0
-- Create React App
-- EmailJS for contact form functionality
-- CSS3 with Grid and Flexbox
-- Modern JavaScript (ES6+)
+Push to `master`. GitHub Actions runs `npm ci` and `npm run build`, then uploads `build/` over FTP
+to `domains/metalloscrap.com/public_html` on Hostinger. It takes about two minutes. Check the
+**Actions** tab for a green tick, then open the site in a private window.
 
-## License
+- Every push deploys, including README-only changes. Pushing a tag does not.
+- The deploy empties the live folder first, so never upload files there by hand.
+- The FTP login lives in the repository secrets `FTP_HOST`, `FTP_USERNAME` and `FTP_PASSWORD`.
 
-This project is created for demonstration purposes.
+## Rolling back
 
-## Contact
+Every release is tagged (`v1.0.0`, `v2.0.0`, ...). To put an earlier version back live:
 
-For questions or support, please contact the development team. 
+```bash
+git pull origin master
+git revert --no-edit v1.0.0..HEAD   # replace v1.0.0 with the version you want
+git push origin master              # deploys the old version in about two minutes
+```
+
+Full runbook, including checks and tagging new releases: [docs/ROLLBACK.md](docs/ROLLBACK.md).
+
+## Contact form (EmailJS)
+
+- Service `service_gxrynx3`, template `template_q926awn`, public key in `src/components/ContactForm.js`.
+- The visitor's address goes in Reply-To, never From, so mail is not flagged as spoofed.
+- A green confirmation shows for 5 seconds after sending, then fades. Errors stay until the visitor
+  edits the form.
+- Template setup and spam-folder fixes: `docs/EMAIL_DELIVERABILITY.md`.
+
+## SEO
+
+- Title `Shreela Group`, meta description, Open Graph and X (Twitter) cards using the logo plate.
+- Canonical URL `https://metalloscrap.com/`; section URLs are the same page, so they are not listed
+  separately in `sitemap.xml`.
+- Organization structured data (JSON-LD) in `index.html`: name, former name, logo, contact details.
+- `robots.txt` allows all crawlers and points to the sitemap.
+
+---
+
+# Change history
+
+Dated entries, oldest first. Older entries describe the state at the time and are kept as written.
 
 ## 2026-10-07
 
@@ -374,3 +219,37 @@ For questions or support, please contact the development team.
   History is kept, so the redesign can be restored later by reverting those revert commits.
   After a rollback, `/contact` and the new QR code stop working, and the old `#contact-info`
   QR works again.
+
+## 2026-10-07 (night): README rewrite, rollback runbook, form banner timer, SEO
+
+### Correction: README overview rewritten
+
+- **Why:** the overview above the dated entries still described the original template ("Core
+  Metals"), listed files that no longer exist (`favicon.ico`, the old image set), gave line numbers
+  that no longer matched, and told people to paste EmailJS keys that are already configured. It was
+  factually wrong, so it was replaced with the current overview. The dated entries are unchanged.
+
+### Rollback runbook
+
+- Added `docs/ROLLBACK.md` and a "Rolling back" section above. The revert method was rehearsed before
+  v2.0.0 went live: reverting `v1.0.0..HEAD` produced a tree identical to `v1.0.0`.
+
+### Issue faced: the green "sent" banner never went away
+
+- **Symptom:** after a successful inquiry the form cleared, but the confirmation stayed on screen.
+- **Cause:** the success state was only reset on the next submit.
+- **Fix:** the banner fades out after 5 seconds and is then removed. 5 seconds was chosen over 3 so a
+  slower reader can finish the sentence. Error messages do not auto-hide, so a failed send is never
+  missed; they clear when the visitor edits the form. Verified in Chrome with EmailJS intercepted:
+  shown at 4 s, fading at 5.2 s, gone at 5.7 s.
+
+### SEO
+
+- **Found:** `/robots.txt` and `/sitemap.xml` did not exist, so the section-URL rewrite answered them
+  with the HTML page. Real files were added.
+- Added a canonical link, `og:site_name`, `og:locale`, `og:image:alt`, a fuller robots directive,
+  Organization structured data with only facts already on the site, and a no-JavaScript fallback with
+  the contact details.
+- Kept the title as just "Shreela Group", as requested. A longer title such as "Shreela Group | Brass,
+  Copper, Iron & Aluminium Scrap Supplier" would rank better for product searches.
+- Text compression was already on (Brotli), so nothing was needed there.
