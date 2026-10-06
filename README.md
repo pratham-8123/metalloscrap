@@ -304,3 +304,73 @@ For questions or support, please contact the development team.
    directly inside them. The `public_html` folder at the top of the home folder is unused and never
    changes. The empty `DO_NOT_UPLOAD_HERE` file in `domains/metalloscrap.com` is Hostinger's marker
    that site files belong one level down, in `public_html`.
+
+## 2026-10-07 (evening): redesign, section URLs and cache rules
+
+### Issue faced: the QR code landed at the top of the page on a real phone
+
+- **Symptom:** scanning the QR (`https://metalloscrap.com/#contact-info`) opened the site but stayed
+  on the hero instead of scrolling to the contact details.
+- **Checked:** a fresh load of that link landed correctly in Chrome and in WebKit (Safari's engine)
+  with iPhone emulation, so the scroll code worked on a clean visit.
+- **Causes that fit:** the page was served without a `Cache-Control` header, so phones could keep an
+  old cached copy without the anchor; some scanner apps drop the `#...` part of a link; and opening
+  the link in a tab that already shows the site does not reload the page.
+- **Fix:** each section now has a real URL (`/about`, `/products`, `/contact`), and the QR encodes
+  `/contact`. `public/.htaccess` serves the page for those paths and sends `Cache-Control: no-cache`
+  for HTML, so visitors always get the latest deploy. Old `#contact-info` links, including in an
+  already-open tab, are redirected to `/contact`.
+
+### How the section URLs work
+
+- Still a single page. `src/components/useSectionRouting.js` reads the URL on load and jumps to the
+  section, re-aligning after fonts load unless the visitor has started scrolling.
+- Menu clicks push the section's URL; scrolling updates the URL with `replaceState`; back and
+  forward scroll to the right section. Aliases: `/home`, `/vision`, `/contact-us`; unknown paths
+  show the home section.
+- `public/.htaccess` rewrites any path that is not a real file to `index.html`. Hashed build files
+  are cached for a year, unversioned images for a day.
+
+### Redesign: what was done and why
+
+- **Theme from the SG logo:** charcoal background with copper, brass and steel accents, Sora for
+  headings and Inter for text. The previous generic blue clashed with the copper and gold logo.
+- **No more low-resolution photos.** The old images were 225 to 380 px wide and looked blurry when
+  stretched. They were removed. Product cards now use metallic tiles drawn in CSS, styled like
+  periodic-table squares (Cu·Zn, Cu, Fe, Al), which stay sharp on any screen.
+- **Hero:** the logo board is shown as a framed plate (`sg_logo_plate.jpg` and `.webp`, 1044 x 610),
+  cropped from `sg_logo.jpeg` inside the board so the Gemini watermark in the original's corner is
+  excluded. The hero backdrop is a heavily blurred copy of the logo image, so it cannot look
+  pixelated. Link previews now use the plate image too.
+- **Added:** a mobile menu (phones previously had no navigation), a highlights strip, labelled form
+  fields, a skip link, keyboard focus styles, and fade-in motion that is disabled for visitors who
+  ask for reduced motion.
+- **Kept unchanged:** all wording, contact details, and the EmailJS form logic and payload, now in
+  `src/components/ContactForm.js`.
+
+### Verification before deploy
+
+- `CI=true npm run build` passes, so the GitHub Actions build will too, since it fails on any lint
+  warning.
+- 56 navigation checks passed in Chrome and WebKit, including `/contact` landing with both phone
+  numbers and an email on screen.
+- No horizontal overflow at widths from 320 to 1920 px.
+- After deploy, confirm that `/contact` returns 200 and that the page sends `Cache-Control: no-cache`.
+  If Hostinger ignored `.htaccess`, `/contact` would return 404.
+
+### Versions and rollback
+
+- `v1.0.0` is the site exactly as it was live before this redesign (commit `2ffbe8b`).
+- `v2.0.0` is this redesign. `package.json` carries the same version number.
+- Tags are listed at https://github.com/pratham-8123/metalloscrap/tags. Pushing a tag does not deploy;
+  only pushes to `master` do.
+- To roll the live site back to v1.0.0:
+
+  ```bash
+  git revert --no-edit v1.0.0..HEAD   # one new commit per change since v1.0.0, undoing it
+  git push origin master              # the pipeline deploys the old site in about two minutes
+  ```
+
+  History is kept, so the redesign can be restored later by reverting those revert commits.
+  After a rollback, `/contact` and the new QR code stop working, and the old `#contact-info`
+  QR works again.

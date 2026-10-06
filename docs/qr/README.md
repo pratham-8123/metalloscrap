@@ -102,3 +102,38 @@ Inkscape, Illustrator or Figma can export them too.
 python docs/qr/generate_qr.py                    # uses sg_icon_master.jpg for the centre
 python docs/qr/generate_qr.py --badge other.png  # different centre image
 ```
+
+## 2026-10-07 (evening): QR now opens metalloscrap.com/contact, restyled to the new theme
+
+### Issue faced: the QR opened the top of the home page on a real phone
+
+- **Symptom:** scanning the code opened metalloscrap.com but stayed on the hero instead of the
+  contact block, even though the same link landed correctly in desktop Chrome.
+- **What was checked:** the live link landed correctly in WebKit (Safari's engine) with iPhone
+  emulation on a fresh load, so the page code was not the problem on a clean visit.
+- **Likely causes, any of which breaks a `#contact-info` link:**
+  - the live page was sent with no `Cache-Control` header, so a phone that had visited before could
+    keep showing an old cached copy without the contact anchor;
+  - some QR scanner apps drop the `#...` part of a link;
+  - a browser can open the link in a tab that already shows the site, where no reload happens.
+- **Fix:** the code now encodes `https://metalloscrap.com/contact`, a real path, which scanners
+  never strip and no phone has cached. The site answers `/contact` through `public/.htaccess`, sends
+  `Cache-Control: no-cache` for the page, and still accepts the old `#contact-info` link.
+
+### What changed in the artwork
+
+- Link: `https://metalloscrap.com/contact`. The shorter link fits QR version 4 (33 x 33 modules,
+  previously 37 x 37), so each module is larger and easier to scan. Error correction is still H.
+- Colours now match the redesigned site: charcoal header and footer bands, the "SHREELA GROUP"
+  wordmark in a brass-to-copper gradient, a copper rule, and finder rings in dark copper `#8f4a2a`.
+  That copper is dark enough that scanners read it as black. Data modules are charcoal `#14171b`.
+- The fallback text under the code reads `metalloscrap.com/contact`.
+
+### Verification
+
+- zbar reads both PNGs back as exactly `https://metalloscrap.com/contact`.
+- It still decodes the card at 10% size, the QR-only PNG at 90 px, and after blur, a 12 degree
+  rotation, perspective skew and low-contrast greyscale.
+- Heavy JPEG sweep: 10 failures out of 35, against 8 for a plain black-and-white control. That is
+  zbar's normal variation, not a scanning penalty from the styling.
+- Do not print this version until the site change is deployed: before that, `/contact` returns 404.

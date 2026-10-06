@@ -28,16 +28,19 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 
-DEFAULT_URL = "https://metalloscrap.com/#contact-info"
+DEFAULT_URL = "https://metalloscrap.com/contact"
 
-# Brand palette, taken from src/components/BusinessWebsite.css
-INK = "#1a1a1a"
-BLUE = "#2c5aa0"
-BLUE_DARK = "#1e3a5f"
+# Brand palette, matching the site theme in src/index.css (charcoal, copper, brass).
+INK = "#14171b"         # QR modules and headings: near-black charcoal
+CHARCOAL = "#0b0d10"    # header and footer bands, same as the site background
+COPPER_DARK = "#8f4a2a" # finder rings: dark enough for scanners to read as black
+COPPER_TEXT = "#9c4f2c" # copper text on white, legible at small sizes
+COPPER = "#e08a57"
+BRASS = "#f3dca0"
 GREY = "#4a4a4a"
 MUTED = "#666666"
 FRAME = "#e2e6ea"
-HEADER_SUB = "#a9a9a9"
+HEADER_SUB = "#a7afba"
 WHITE = "#ffffff"
 
 WEIGHTS = (500, 700, 800, 900)
@@ -147,7 +150,7 @@ def qr_artwork(matrix, x0, y0, m, badge_uri):
     for fr, fc in finders:
         fx, fy = ox + fc * m, oy + fr * m
         ring = rrect(fx, fy, 7 * m, 7 * m, 2 * m) + rrect(fx + m, fy + m, 5 * m, 5 * m, 1.1 * m)
-        parts.append(f'<path fill="{BLUE}" fill-rule="evenodd" d="{ring}"/>')
+        parts.append(f'<path fill="{COPPER_DARK}" fill-rule="evenodd" d="{ring}"/>')
         parts.append(f'<path fill="{INK}" d="{rrect(fx + 2 * m, fy + 2 * m, 3 * m, 3 * m, 0.9 * m)}"/>')
 
     # Centre badge: the square SG logo image with rounded corners, inside the cleared area.
@@ -169,8 +172,9 @@ def data_uri(path):
 def svg_doc(w, h, title, body):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n'
             f"<title>{title}</title>\n"
-            f'<defs><linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">'
-            f'<stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{BLUE_DARK}"/></linearGradient></defs>\n'
+            f'<defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">'
+            f'<stop offset="0" stop-color="{BRASS}"/><stop offset="0.45" stop-color="#e0b56d"/>'
+            f'<stop offset="1" stop-color="{COPPER}"/></linearGradient></defs>\n'
             f"{body}\n</svg>\n")
 
 
@@ -189,10 +193,10 @@ def build_card(matrix, fonts, badge_uri):
     body = [
         f'<rect width="{W}" height="{H}" fill="{WHITE}"/>',
         # Header, styled like the site navbar: near-black band with a blue rule.
-        f'<rect width="{W}" height="300" fill="{INK}"/>',
-        text(black, "SHREELA GROUP", 96, 172, WHITE, tracking=-1),
+        f'<rect width="{W}" height="300" fill="{CHARCOAL}"/>',
+        text(black, "SHREELA GROUP", 96, 172, "url(#metal)", tracking=-1),
         text(medium, "(formerly MetalloScrap)", 30, 236, HEADER_SUB, tracking=4),
-        f'<rect y="300" width="{W}" height="12" fill="{BLUE}"/>',
+        f'<rect y="300" width="{W}" height="12" fill="url(#metal)"/>',
         # Call to action
         text(black, "SCAN TO CONTACT US", 58, 424, INK, tracking=1),
         text(medium, "Call, email or send us an inquiry", 30, 476, MUTED),
@@ -200,11 +204,12 @@ def build_card(matrix, fonts, badge_uri):
         f'<path fill="none" stroke="{FRAME}" stroke-width="4" d="{rrect(qx, qy, qr_side, qr_side, 28)}"/>',
         qr_artwork(matrix, qx, qy, m, badge_uri),
         # Fallback details for anyone who cannot scan
-        text(xbold, "metalloscrap.com", 46, qy + qr_side + 82, BLUE),
+        text(xbold, "metalloscrap.com/contact", 46, qy + qr_side + 82, COPPER_TEXT),
         text(medium, "+49 176 68554158   ·   +91 91489 71493", 30, qy + qr_side + 142, GREY),
         text(medium, "info@metalloscrap.com", 30, qy + qr_side + 188, GREY),
         # Footer band in the site's button gradient
-        f'<rect y="{H - 110}" width="{W}" height="110" fill="url(#brand)"/>',
+        f'<rect y="{H - 110}" width="{W}" height="110" fill="{CHARCOAL}"/>',
+        f'<rect y="{H - 110}" width="{W}" height="6" fill="url(#metal)"/>',
         text(bold, "DIRECT METAL PROCUREMENT SOLUTIONS", 28, H - 45, WHITE, tracking=4),
     ]
     return svg_doc(W, H, "Shreela Group: scan to contact us", "\n".join(body))

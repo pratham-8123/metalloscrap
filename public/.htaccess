@@ -1,0 +1,34 @@
+# Shreela Group site. Copied from public/ into build/ and deployed with every push.
+# Hostinger's LiteSpeed server reads this file.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Real files and folders are served as they are.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Section URLs such as /about, /products and /contact all load the one page.
+  # The app then scrolls to the matching section.
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Images without a version in their name: keep for a day, then re-check.
+  <FilesMatch "\.(jpe?g|png|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+
+  # Build files carry a content hash in their name and never change, so cache for a year.
+  <FilesMatch "\.[0-9a-f]{8,20}\.(js|css|jpe?g|png|webp|svg|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # The page itself is re-checked on every visit, so returning visitors and
+  # QR scans always get the latest version instead of a stale copy.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
