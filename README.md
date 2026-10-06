@@ -257,3 +257,45 @@ This project is created for demonstration purposes.
 ## Contact
 
 For questions or support, please contact the development team. 
+
+## 2026-10-07
+
+### How deployment works now
+
+- Every push to `master` runs `.github/workflows/deploy.yml`: `npm ci`, `npm run build`, then an FTP
+  upload of `build/` to Hostinger. A run takes about two minutes. No File Manager steps are needed.
+- The upload target is `/domains/metalloscrap.com/public_html/`, relative to the FTP account's home.
+  That is the folder Hostinger serves for metalloscrap.com.
+- `dangerous-clean-slate: true` empties that folder before each upload, so anything added there by
+  hand is deleted on the next deploy. The site is briefly empty for about 40 seconds during a deploy.
+- Every push deploys, including README-only changes like this one. The workflow has no path filter,
+  so such a push re-uploads an identical site.
+- Pushing needs a GitHub account with write access. A fine-grained token needs "Contents: Read and
+  write", plus "Workflows: Read and write" for commits that change `.github/workflows/`.
+
+### Issue faced: deploys reported success but the live site never changed
+
+- **Symptom:** the Actions run was green and the FTP step took about 40 seconds, but metalloscrap.com
+  still served the 20 March 2026 build and newly added files returned 404.
+- **Root cause:** the workflow uploaded to `/public_html/` at the top of the FTP home. On this hosting
+  account that folder is not served by any site. metalloscrap.com is served from
+  `domains/metalloscrap.com/public_html`. The March deploys did reach the live site, so the hosting
+  layout changed some time after March 2026.
+- **Interim fix:** commit `3615ff3` was deployed by hand through hPanel File Manager into
+  `domains/metalloscrap.com/public_html`. The unused top-level `public_html` was emptied afterwards.
+- **Fix:** `server-dir` changed to `/domains/metalloscrap.com/public_html/` in commit `0b4b57a`.
+  Verified on the live site: the `Last-Modified` time of `index.html` fell inside the FTP step's
+  window, source-map files that only the pipeline uploads appeared, and the old March bundle was
+  removed by the clean-slate step.
+- **Kept `dangerous-clean-slate`:** the live folder holds only build output, and wiping it each time
+  stops old hashed bundles from piling up.
+
+### How to check a deploy
+
+1. On GitHub, open the **Actions** tab. The run for your commit should show a green tick.
+2. Open https://metalloscrap.com in a private window and look for the change.
+3. For changes that are not visible, compare the page's last-modified time with the run's FTP step:
+
+   ```bash
+   curl -sI https://metalloscrap.com/ | grep -i last-modified
+   ```
