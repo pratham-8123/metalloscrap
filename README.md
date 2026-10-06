@@ -299,3 +299,8 @@ For questions or support, please contact the development team.
    ```bash
    curl -sI https://metalloscrap.com/ | grep -i last-modified
    ```
+4. In hPanel File Manager, open `domains/metalloscrap.com/public_html` and check the date on
+   `index.html`. Go by that file, not the folder dates, which only change when something is added
+   directly inside them. The `public_html` folder at the top of the home folder is unused and never
+   changes. The empty `DO_NOT_UPLOAD_HERE` file in `domains/metalloscrap.com` is Hostinger's marker
+   that site files belong one level down, in `public_html`.
