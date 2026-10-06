@@ -39,6 +39,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./build/
-          server-dir: /public_html/
+          # Hostinger serves metalloscrap.com from domains/metalloscrap.com/public_html.
+          # The top-level /public_html/ in the FTP home is not served by any site.
+          server-dir: /domains/metalloscrap.com/public_html/
           dangerous-clean-slate: true
           timeout: 120000
